@@ -11,13 +11,14 @@ class FillTheForm(Elements):
     def access_website_to_good_vibe(self) -> None:
         """fill the form"""
         if self.does_element_exist(self.mainpath_close_modal):
-            elem = self.find_element(self.mainpath_close_modal)
+            elem = self.find_element_with_wait(self.mainpath_close_modal)
             elem.click()
-        elem = self.find_element(self.mainpath_gnb_work)
+        elem = self.find_element_with_wait(self.mainpath_gnb_work)
         elem.click()
 
-        elem = self.find_element(self.mainpath_goodvibe_btn)
+        elem = self.find_element_with_wait(self.mainpath_goodvibe_btn)
         elem.click()
+        # 창이 열린뒤 페이지가 Load 될 때 까지 대기
         self.driver.implicitly_wait(10)
         # assert check_comment in check_element.text
 
@@ -32,21 +33,43 @@ class FillTheForm(Elements):
             # 마지막 창으로 이동한다.
             last_window = self.driver.window_handles[new_window_count - 1]
             self.driver.switch_to.window(last_window)
-        elem = self.find_element(self.gvpath_gnb_trial_btn)
+        elem = self.find_element_with_wait(self.gvpath_gnb_trial_btn)
         elem.click()
 
-        elem_company_name = self.find_element(self.gvpath_form_company_name)
+        elem_company_name = self.find_element_with_wait(self.gvpath_form_company_name)
         elem_company_name.send_keys("주식회사 일이삼")
-        elem_ceo = self.find_element(self.gvpath_form_ceo_name)
+        elem_ceo = self.find_element_with_wait(self.gvpath_form_ceo_name)
         elem_ceo.send_keys("김사장")
-        elem_name = self.find_element(self.gvpath_form_name)
+        elem_name = self.find_element_with_wait(self.gvpath_form_name)
         elem_name.send_keys("이사원")
-        elem_email = self.find_element(self.gvpath_form_email)
+        elem_email = self.find_element_with_wait(self.gvpath_form_email)
         elem_email.send_keys("123@company.com")
-        elem_mobile = self.find_element(self.gvpath_form_mobile)
+        elem_mobile = self.find_element_with_wait(self.gvpath_form_mobile)
         elem_mobile.send_keys("01011112222")
-        elem_check_term = self.find_element(self.gvpath_form_checkbox_term)
+        elem_check_term = self.find_element_with_wait(self.gvpath_form_checkbox_term)
         elem_check_term.click()
-        elem_check_privacy = self.find_element(self.gvpath_form_checkbox_privacy)
+        elem_check_privacy = self.find_element_with_wait(
+            self.gvpath_form_checkbox_privacy
+        )
         elem_check_privacy.click()
-        sleep(10)
+
+        business_type = "개인"
+        elem_business_type = self.find_element_with_wait(self.gvpath_form_business_type)
+        elem_business_type.click()
+        # 클릭한 이후에 개인, 법인 옵션을 찾는다.
+        elem_business_type_co = elem_business_type.find_element(
+            *self.gvpath_form_business_type_co
+        )
+        elem_business_type_ind = elem_business_type.find_element(
+            *self.gvpath_form_business_type_ind
+        )
+        if business_type == "개인":
+            elem_business_type_ind.click()
+            print("개인클릭")
+        else:
+            elem_business_type_co.click()
+            print("법인클릭")
+        # 두번 클릭 하여 선택을 완료함
+        [elem_business_type.click() for i in range(2)]
+
+        sleep(30)

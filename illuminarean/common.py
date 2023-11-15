@@ -13,7 +13,6 @@ class TestTools:
         self.driver = driver
         self.timeout = 20
 
-
     def find_elements(self, locator: Any) -> Any:
         """
         return elements on a page
@@ -25,7 +24,7 @@ class TestTools:
         except NoSuchElementException:
             return None
 
-    def find_element(self, locator: Any) -> Any:
+    def find_element_with_wait(self, locator: Any) -> Any:
         """
         return element when present on a page
         """
