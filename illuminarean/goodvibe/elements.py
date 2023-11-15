@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from typing import Any
 from illuminarean.common import TestTools
 
+
 class Elements(TestTools):
     """Elements for find_elements"""
 
@@ -12,9 +13,15 @@ class Elements(TestTools):
         super().__init__(driver)
 
         # main site
-        self.mainpath_close_modal = [By.CSS_SELECTOR, '[aria-label="company:close_modal"']
+        self.mainpath_close_modal = [
+            By.CSS_SELECTOR,
+            '[aria-label="company:close_modal"',
+        ]
         self.mainpath_gnb_work = [By.CSS_SELECTOR, '[aria-label="a11y:Work"']
-        self.mainpath_goodvibe_btn = [By.XPATH, '//a[contains(text(),"GOODVIBE WORKS")]']
+        self.mainpath_goodvibe_btn = [
+            By.XPATH,
+            '//a[contains(text(),"GOODVIBE WORKS")]',
+        ]
 
         # GOODVIBE site
         self.gvpath_gnb_trial_btn = [By.XPATH, '//button[text()="무료 체험 신청"]']
@@ -24,8 +31,12 @@ class Elements(TestTools):
         self.gvpath_form_email = [By.XPATH, '//input[@name="email"]']
         self.gvpath_form_mobile = [By.XPATH, '//input[@name="mobile"]']
 
-        self.gvpath_form_checkbox_term = [By.ID, 'agreeTermsOfUse']
-        self.gvpath_form_checkbox_privacy = [By.ID, 'agreePrivacyStatement']
+        self.gvpath_form_business_type = [By.ID, "businessType"]
+        self.gvpath_form_business_type_co = [By.XPATH, '//div[text()="법인"]']
+        self.gvpath_form_business_type_ind = [By.XPATH, '//div[text()="개인"]']
+
+        self.gvpath_form_checkbox_term = [By.ID, "agreeTermsOfUse"]
+        self.gvpath_form_checkbox_privacy = [By.ID, "agreePrivacyStatement"]
 
         # 사업자 유형
         # //*[@id="businessType"]/div/div[1]
