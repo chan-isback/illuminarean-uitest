@@ -35,16 +35,12 @@ class Elements(TestTools):
         self.gvpath_form_business_type_co = [By.XPATH, '//div[text()="법인"]']
         self.gvpath_form_business_type_ind = [By.XPATH, '//div[text()="개인"]']
 
+        self.gvpath_form_scale = [By.ID, "scale"]
+        self.scale_preset = ["1-5", "6-20", "21-50", "51-100", "101-200", "201-500"]
+        self.gvpath_form_scale_items_pre = [
+            By.XPATH,
+            '//div[contains(text(), "!scale_preset!")]',
+        ]
+
         self.gvpath_form_checkbox_term = [By.ID, "agreeTermsOfUse"]
         self.gvpath_form_checkbox_privacy = [By.ID, "agreePrivacyStatement"]
-
-        # 사업자 유형
-        # //*[@id="businessType"]/div/div[1]
-        # 직원수
-        # //*[@id="scale"]/div/div[1]
-        # 담당업무
-        # /html/body/div[5]/div/div/div/div/div/div/div/div[2]/dl[8]/dd/div/div[2]/button/p/div
-        # /html/body/div[5]/div/div/div/div/div/div/div/div[2]/div/div[1]/label
-
-        # GOODVIBE WORKS 바로가기
-        # //*[@id="__next"]/div/main/div/div[2]/div/div[3]/div/a

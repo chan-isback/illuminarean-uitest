@@ -72,4 +72,18 @@ class FillTheForm(Elements):
         # 두번 클릭 하여 선택을 완료함
         [elem_business_type.click() for i in range(2)]
 
+        scale_number = "6-20"
+        # scale_number 가 유효한 숫자인지 확인한다.
+        assert scale_number in self.scale_preset
+        elem_scale = self.find_element_with_wait(self.gvpath_form_scale)
+        elem_scale.click()
+        gvpath_form_scale_item = self.gvpath_form_scale_items_pre.copy()
+        gvpath_form_scale_item[1] = gvpath_form_scale_item[1].replace(
+            "!scale_preset!", scale_number
+        )
+        print("gvpath_form_scale_item", gvpath_form_scale_item)
+        elem_scale_item = self.find_element_with_wait(gvpath_form_scale_item)
+        elem_scale_item.click()
+        [elem_scale.click() for i in range(2)]
+
         sleep(30)
