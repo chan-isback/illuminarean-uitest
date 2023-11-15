@@ -32,14 +32,19 @@ class Elements(TestTools):
         self.gvpath_form_mobile = [By.XPATH, '//input[@name="mobile"]']
 
         self.gvpath_form_business_type = [By.ID, "businessType"]
-        self.gvpath_form_business_type_co = [By.XPATH, '//div[text()="법인"]']
-        self.gvpath_form_business_type_ind = [By.XPATH, '//div[text()="개인"]']
+        self.business_type_preset = ["법인", "개인"]
+        self.business_type_preset_substitution = "!business_type_preset!"
+        self.gvpath_form_business_type_items_pre = [
+            By.XPATH,
+            '//div[text()="{0}"]'.format(self.business_type_preset_substitution),
+        ]
 
         self.gvpath_form_scale = [By.ID, "scale"]
         self.scale_preset = ["1-5", "6-20", "21-50", "51-100", "101-200", "201-500"]
+        self.scale_preset_substitution = "!scale_preset!"
         self.gvpath_form_scale_items_pre = [
             By.XPATH,
-            '//div[contains(text(), "!scale_preset!")]',
+            '//div[contains(text(), "{0}")]'.format(self.scale_preset_substitution),
         ]
 
         self.gvpath_form_checkbox_term = [By.ID, "agreeTermsOfUse"]
