@@ -1,9 +1,9 @@
-
 from datetime import datetime
 from time import sleep
 from typing import Any, Dict
 from illuminarean.common import TestTools
 from illuminarean.goodvibe.elements import Elements
+
 
 class FillTheForm(Elements):
     """Create Data source Class"""
@@ -18,8 +18,7 @@ class FillTheForm(Elements):
 
         elem = self.find_element(self.mainpath_goodvibe_btn)
         elem.click()
-
-        sleep(3)
+        self.driver.implicitly_wait(10)
         # assert check_comment in check_element.text
 
     def fill_the_form(self) -> None:
@@ -27,9 +26,10 @@ class FillTheForm(Elements):
         # 창 전환후 elem 을 가져와야 됨
         # https://stackoverflow.com/questions/10629815/how-to-switch-to-new-window-in-selenium-for-python
 
-        # 새창으로 띄워졌을 경우 마지막 창으로 이동한다.
         new_window_count = len(self.driver.window_handles)
-        if new_window_count > 2:
+        # 새창으로 띄워졌을 경우 2개 이상의 창이 존재함
+        if new_window_count >= 2:
+            # 마지막 창으로 이동한다.
             last_window = self.driver.window_handles[new_window_count - 1]
             self.driver.switch_to.window(last_window)
         elem = self.find_element(self.gvpath_gnb_trial_btn)
