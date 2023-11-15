@@ -11,6 +11,14 @@ class CustomException(Exception):
     pass
 
 
+class SelectBox:
+    def __init__(self, item_located, preset, substitution, items):
+        self.item_located = item_located
+        self.preset = preset
+        self.substitution = substitution
+        self.items = items
+
+
 class FillTheForm(Elements):
     """Create Data source Class"""
 
@@ -30,25 +38,30 @@ class FillTheForm(Elements):
 
     def choose_select_box(self, selected_item: str, value_type: str) -> None:
         if value_type == "business":
-            item_located = self.gvpath_form_business_type
-            preset = self.business_type_preset
-            substitution = self.business_type_preset_substitution
-            items = self.gvpath_form_business_type_items_pre
+            sb = SelectBox(
+                item_located=self.gvpath_form_business_type,
+                preset=self.business_type_preset,
+                substitution=self.business_type_preset_substitution,
+                items=self.gvpath_form_business_type_items_pre,
+            )
+
         elif value_type == "scale":
-            item_located = self.gvpath_form_scale
-            preset = self.scale_preset
-            substitution = self.scale_preset_substitution
-            items = self.gvpath_form_scale_items_pre
+            sb = SelectBox(
+                item_located=self.gvpath_form_scale,
+                preset=self.scale_preset,
+                substitution=self.scale_preset_substitution,
+                items=self.gvpath_form_scale_items_pre,
+            )
         else:
             raise CustomException("value_type is invalid")
 
         # selected_item 가 유효한 옵션인지 확인한다.
-        assert selected_item in preset
+        assert selected_item in sb.preset
 
-        elem_item = self.find_element_with_wait(item_located)
+        elem_item = self.find_element_with_wait(sb.item_located)
         elem_item.click()
-        item_located = items.copy()
-        item_located[1] = item_located[1].replace(substitution, selected_item)
+        item_located = sb.items.copy()
+        item_located[1] = item_located[1].replace(sb.substitution, selected_item)
         elem_item_selected = self.find_element_with_wait(item_located)
         elem_item_selected.click()
         [elem_item.click() for i in range(2)]
@@ -86,38 +99,6 @@ class FillTheForm(Elements):
 
         # business, scale
         self.choose_select_box(selected_item="개인", value_type="business")
-        # business_type = "개인"
-        # elem_business_type = self.find_element_with_wait(self.gvpath_form_business_type)
-        # elem_business_type.click()
-        # # 클릭한 이후에 개인, 법인 옵션을 찾는다.
-        # elem_business_type_co = elem_business_type.find_element(
-        #     *self.gvpath_form_business_type_items_pre
-        # )
-        # elem_business_type_ind = elem_business_type.find_element(
-        #     *self.gvpath_form_business_type_ind
-        # )
-        # if business_type == "개인":
-        #     elem_business_type_ind.click()
-        #     print("개인클릭")
-        # else:
-        #     elem_business_type_co.click()
-        #     print("법인클릭")
-        # 두번 클릭 하여 선택을 완료함
-        # [elem_business_type.click() for i in range(2)]
-
         self.choose_select_box(selected_item="6-20", value_type="scale")
-        # scale_number = "6-20"
-        # # scale_number 가 유효한 숫자인지 확인한다.
-        # assert scale_number in self.scale_preset
-        # elem_scale = self.find_element_with_wait(self.gvpath_form_scale)
-        # elem_scale.click()
-        # gvpath_form_scale_item = self.gvpath_form_scale_items_pre.copy()
-        # gvpath_form_scale_item[1] = gvpath_form_scale_item[1].replace(
-        #     self.scale_preset_substitution, scale_number
-        # )
-        # print("gvpath_form_scale_item", gvpath_form_scale_item)
-        # elem_scale_item = self.find_element_with_wait(gvpath_form_scale_item)
-        # elem_scale_item.click()
-        # [elem_scale.click() for i in range(2)]
 
         sleep(30)
