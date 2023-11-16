@@ -47,5 +47,19 @@ class Elements(TestTools):
             '//div[contains(text(), "{0}")]'.format(self.scale_preset_substitution),
         ]
 
+        self.gvpath_form_duties_root = [By.CLASS_NAME, "duties"]
+        self.gvpath_form_duties_root_input = [By.XPATH, "//dd/div/div/button"]
+        self.gvpath_form_duties_root_options = [
+            By.XPATH,
+            "//dd/div/div/div/div[1]/button",
+        ]
+        self.gvpath_form_duties_root_submit = [
+            By.XPATH,
+            '//button[text()="등록"]',
+        ]
+
         self.gvpath_form_checkbox_term = [By.ID, "agreeTermsOfUse"]
         self.gvpath_form_checkbox_privacy = [By.ID, "agreePrivacyStatement"]
+
+        self.gvpath_form_close = [By.XPATH, "//span[text()='신청 취소']"]
+        self.gvpath_form_close_confirm = [By.XPATH, "//button[text()='확인']"]

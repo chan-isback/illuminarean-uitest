@@ -101,4 +101,42 @@ class FillTheForm(Elements):
         self.choose_select_box(selected_item="개인", value_type="business")
         self.choose_select_box(selected_item="6-20", value_type="scale")
 
-        sleep(30)
+        elem_duty_root = self.find_element_with_wait(self.gvpath_form_duties_root)
+        elem_duty_input = elem_duty_root.find_element(
+            *self.gvpath_form_duties_root_input
+        )
+        elem_duty_input.click()
+
+        elem_duty_options = elem_duty_root.find_elements(
+            *self.gvpath_form_duties_root_options
+        )
+        duty_select_options = ["공연기획", "음반제작"]
+        duty_select_options_elem = []
+        duty_options = []
+        for elem_duty_option in elem_duty_options:
+            duty_option_name = elem_duty_option.text
+            duty_options.append(duty_option_name)
+            for duty_select_option in duty_select_options:
+                if duty_option_name == duty_select_option:
+                    duty_select_options_elem.append(elem_duty_option)
+
+        # 선택한 옵션이 없을 경우 assert False 판단함
+        for duty_select_option in duty_select_options:
+            assert duty_select_option in duty_options
+
+        # 옵션 일괄 선택
+        for duty_select_option_elem in duty_select_options_elem:
+            duty_select_option_elem.click()
+
+        elem_duty_submit = elem_duty_root.find_element(
+            *self.gvpath_form_duties_root_submit
+        )
+        elem_duty_submit.click()
+        sleep(5)
+
+        elem_close = self.find_element_with_wait(self.gvpath_form_close)
+        elem_close.click()
+        sleep(5)
+        elem_close_confirm = self.find_element_with_wait(self.gvpath_form_close_confirm)
+        elem_close_confirm.click()
+        sleep(5)
