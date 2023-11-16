@@ -1,8 +1,10 @@
-from datetime import datetime
 from time import sleep
-from typing import Any, Dict
-from illuminarean.common import TestTools
+from typing import Any
 from illuminarean.goodvibe.elements import Elements
+import pandas as pd
+
+# pytest 로 실행할 예정이므로 tests 상위 폴더 기준으로 csv 파일을 불러온다.
+df = pd.read_csv("../illuminarean/goodvibe/sample.csv")
 
 
 class CustomException(Exception):
@@ -35,6 +37,10 @@ class FillTheForm(Elements):
         # 창이 열린뒤 페이지가 Load 될 때 까지 대기
         self.driver.implicitly_wait(10)
         # assert check_comment in check_element.text
+
+    def send_key_to_elem(self, target_path: Any, words: str):
+        elem = self.find_element_with_wait(target_path)
+        elem.send_keys(words)
 
     def choose_select_box(self, selected_item: str, value_type: str) -> None:
         if value_type == "business":
@@ -80,26 +86,16 @@ class FillTheForm(Elements):
         elem = self.find_element_with_wait(self.gvpath_gnb_trial_btn)
         elem.click()
 
-        elem_company_name = self.find_element_with_wait(self.gvpath_form_company_name)
-        elem_company_name.send_keys("주식회사 일이삼")
-        elem_ceo = self.find_element_with_wait(self.gvpath_form_ceo_name)
-        elem_ceo.send_keys("김사장")
-        elem_name = self.find_element_with_wait(self.gvpath_form_name)
-        elem_name.send_keys("이사원")
-        elem_email = self.find_element_with_wait(self.gvpath_form_email)
-        elem_email.send_keys("123@company.com")
-        elem_mobile = self.find_element_with_wait(self.gvpath_form_mobile)
-        elem_mobile.send_keys("01011112222")
-        elem_check_term = self.find_element_with_wait(self.gvpath_form_checkbox_term)
-        elem_check_term.click()
-        elem_check_privacy = self.find_element_with_wait(
-            self.gvpath_form_checkbox_privacy
-        )
-        elem_check_privacy.click()
+        self.send_key_to_elem(self.gvpath_form_company_name, df["company_name"][0])
+        self.send_key_to_elem(self.gvpath_form_ceo_name, df["ceo_name"][0])
+        self.send_key_to_elem(self.gvpath_form_name, df["name"][0])
+        self.send_key_to_elem(self.gvpath_form_email, df["email"][0])
+        # Mobile 의 경우 문자로 받아와야 되므로 csv 에는 문자 형태로 따옴표''로 묶어서 저장하였음
+        self.send_key_to_elem(self.gvpath_form_mobile, df["mobile"][0])
 
         # business, scale
-        self.choose_select_box(selected_item="개인", value_type="business")
-        self.choose_select_box(selected_item="6-20", value_type="scale")
+        self.choose_select_box(selected_item=df["business"][0], value_type="business")
+        self.choose_select_box(selected_item=df["scale"][0], value_type="scale")
 
         elem_duty_root = self.find_element_with_wait(self.gvpath_form_duties_root)
         elem_duty_input = elem_duty_root.find_element(
@@ -110,9 +106,10 @@ class FillTheForm(Elements):
         elem_duty_options = elem_duty_root.find_elements(
             *self.gvpath_form_duties_root_options
         )
-        duty_select_options = ["공연기획", "음반제작"]
-        duty_select_options_elem = []
-        duty_options = []
+        # Pandas 에서 불러오기시 list 가 아닌 str 로 불러오므로, list 로 변환하여 가져온다.
+        duty_select_options = eval(df["duty"][0])
+        duty_select_options_elem = []  # duty_select_options 의 element 값을 담을 리스트 변수
+        duty_options = []  # 전체 옵션을 담을 리스트 변수
         for elem_duty_option in elem_duty_options:
             duty_option_name = elem_duty_option.text
             duty_options.append(duty_option_name)
@@ -133,6 +130,14 @@ class FillTheForm(Elements):
         )
         elem_duty_submit.click()
         sleep(5)
+
+        # 이용 약관 및 개인정보 활용 동의 체크
+        elem_check_term = self.find_element_with_wait(self.gvpath_form_checkbox_term)
+        elem_check_term.click()
+        elem_check_privacy = self.find_element_with_wait(
+            self.gvpath_form_checkbox_privacy
+        )
+        elem_check_privacy.click()
 
         elem_close = self.find_element_with_wait(self.gvpath_form_close)
         elem_close.click()
