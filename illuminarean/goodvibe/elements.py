@@ -58,6 +58,11 @@ class Elements(TestTools):
             '//button[text()="등록"]',
         ]
 
+        self.gvpath_Form_duties_search = [
+            By.XPATH,
+            "//input[contains(@placeholder, '업무명 검색')]",
+        ]
+
         self.gvpath_form_checkbox_term = [By.ID, "agreeTermsOfUse"]
         self.gvpath_form_checkbox_privacy = [By.ID, "agreePrivacyStatement"]
 
