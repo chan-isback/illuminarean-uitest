@@ -1,5 +1,4 @@
 import os
-from datetime import datetime
 from time import sleep
 from typing import Any
 
@@ -11,11 +10,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 
 @pytest.fixture
-def log_in(driver: Any) -> None:
-    """Runway login"""
-    pass
-
-@pytest.fixture
 def driver(base_url: str) -> Any:
     """Install Chrome driver and open test url"""
 
@@ -24,7 +18,6 @@ def driver(base_url: str) -> Any:
         "prefs", {"download.default_directory": os.getcwd()}
     )
 
-
     # Executable_path has been deprecated 로 service를 통해 driver 를 호출함
     service = Service(ChromeDriverManager().install())
 
@@ -32,7 +25,7 @@ def driver(base_url: str) -> Any:
     try:
         # Executable_path has been deprecated 로 service를 통해 driver 를 호출함
         web_driver = webdriver.Chrome(service=service)
-        web_driver.set_window_size(1500,800)
+        web_driver.set_window_size(1500, 800)
         web_driver.get(base_url)
 
         sleep(5)

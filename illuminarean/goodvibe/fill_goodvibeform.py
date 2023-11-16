@@ -1,7 +1,8 @@
 from time import sleep
-from typing import Any
-from illuminarean.goodvibe.elements import Elements
+import ast
+from typing import Any, List
 import pandas as pd
+from illuminarean.goodvibe.elements import Elements
 
 # pytest 로 실행할 예정이므로 tests 상위 폴더 기준으로 csv 파일을 불러온다.
 df = pd.read_csv("../illuminarean/goodvibe/sample.csv")
@@ -14,7 +15,15 @@ class CustomException(Exception):
 
 
 class SelectBox:
-    def __init__(self, item_located, preset, substitution, items):
+    """Bind essential selectbox values"""
+
+    def __init__(
+        self,
+        item_located: List[Any],
+        preset: List[Any],
+        substitution: str,
+        items: List[Any],
+    ) -> None:
         self.item_located = item_located
         self.preset = preset
         self.substitution = substitution
@@ -38,11 +47,13 @@ class FillTheForm(Elements):
         self.driver.implicitly_wait(10)
         # assert check_comment in check_element.text
 
-    def send_key_to_elem(self, target_path: Any, words: str):
+    def send_key_to_elem(self, target_path: Any, words: str) -> None:
+        """send_keys with elements"""
         elem = self.find_element_with_wait(target_path)
         elem.send_keys(words)
 
     def choose_select_box(self, selected_item: str, value_type: str) -> None:
+        """choose selectbox menu"""
         if value_type == "business":
             sb = SelectBox(
                 item_located=self.gvpath_form_business_type,
@@ -107,7 +118,7 @@ class FillTheForm(Elements):
             *self.gvpath_form_duties_root_options
         )
         # Pandas 에서 불러오기시 list 가 아닌 str 로 불러오므로, list 로 변환하여 가져온다.
-        duty_select_options = eval(df["duty"][0])
+        duty_select_options = ast.literal_eval(df["duty"][0])
         duty_select_options_elem = []  # duty_select_options 의 element 값을 담을 리스트 변수
         duty_options = []  # 전체 옵션을 담을 리스트 변수
         for elem_duty_option in elem_duty_options:
@@ -129,7 +140,6 @@ class FillTheForm(Elements):
             *self.gvpath_form_duties_root_submit
         )
         elem_duty_submit.click()
-        sleep(5)
 
         # 이용 약관 및 개인정보 활용 동의 체크
         elem_check_term = self.find_element_with_wait(self.gvpath_form_checkbox_term)
@@ -138,10 +148,11 @@ class FillTheForm(Elements):
             self.gvpath_form_checkbox_privacy
         )
         elem_check_privacy.click()
+        sleep(5)
 
         elem_close = self.find_element_with_wait(self.gvpath_form_close)
         elem_close.click()
-        sleep(5)
+        sleep(3)
         elem_close_confirm = self.find_element_with_wait(self.gvpath_form_close_confirm)
         elem_close_confirm.click()
         sleep(5)

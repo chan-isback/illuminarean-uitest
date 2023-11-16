@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any
 
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 

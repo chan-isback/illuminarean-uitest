@@ -248,3 +248,4 @@ cython_debug/
 /.idea/inspectionProfiles/Project_Default.xml
 /selenium_debug.py
 /.idea/vcs.xml
+!/Makefile
