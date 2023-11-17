@@ -1,6 +1,8 @@
-from selenium.webdriver.common.by import By
+# pylint: disable=R0902, C0209
 
 from typing import Any
+from selenium.webdriver.common.by import By
+
 from illuminarean.common import TestTools
 
 
@@ -58,7 +60,7 @@ class Elements(TestTools):
             '//button[text()="등록"]',
         ]
 
-        self.gvpath_Form_duties_search = [
+        self.gvpath_form_duties_search = [
             By.XPATH,
             "//input[contains(@placeholder, '업무명 검색')]",
         ]

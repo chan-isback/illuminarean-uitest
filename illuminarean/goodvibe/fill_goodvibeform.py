@@ -1,3 +1,5 @@
+# pylint: disable=W0107, R0903, W0106
+
 from time import sleep
 import ast
 from typing import Any, List
@@ -83,6 +85,73 @@ class FillTheForm(Elements):
         elem_item_selected.click()
         [elem_item.click() for i in range(2)]
 
+    def duty_search_a(self, elem_duty_root: Any) -> None:
+        """Requirement 1: Select a duty from list"""
+        elem_duty_options = elem_duty_root.find_elements(
+            *self.gvpath_form_duties_root_options
+        )
+        # 추후 다중 선택이 가능할 수도 있으므로 리스트 형태로 가져오는 형태로 구현
+        # Pandas 에서 불러오기 시 list 가 아닌 str 로 불러오므로, list 로 변환하여 가져온다.
+        duty_select_options = ast.literal_eval(df["duty"][0])
+        duty_select_options_elem = []  # duty_select_options 의 element 값을 담을 리스트 변수
+        duty_options = []  # 전체 옵션을 담을 리스트 변수
+        for elem_duty_option in elem_duty_options:
+            duty_option_name = elem_duty_option.text
+            duty_options.append(duty_option_name)
+            for duty_select_option in duty_select_options:
+                if duty_option_name == duty_select_option:
+                    duty_select_options_elem.append(elem_duty_option)
+
+        # 선택한 옵션이 없을 경우 assert False 판단함
+        for duty_select_option in duty_select_options:
+            assert duty_select_option in duty_options
+
+        # 옵션 선택
+        for duty_select_option_elem in duty_select_options_elem:
+            duty_select_option_elem.click()
+
+    def duty_search_b(self, elem_duty_root: Any, duty_select_option_b: str) -> None:
+        """Requirement 2: Select a duty with the search form"""
+        elem_duty_search = self.find_element_with_wait(self.gvpath_form_duties_search)
+        elem_duty_search.send_keys(duty_select_option_b)
+        # 검색한 뒤 UI 에 반영되는데 약간의 시간이 소요되어서 Sleep 삽입
+        sleep(1)
+        # element 정보를 다시 가져옴 (StaleElementReferenceException 방지)
+        elem_duty_options = elem_duty_root.find_elements(
+            *self.gvpath_form_duties_root_options
+        )
+        for elem_duty_option in elem_duty_options:
+            display_property = elem_duty_option.value_of_css_property("display")
+            if display_property == "inline-block":
+                elem_duty_option.click()
+        # element 정보를 다시 가져옴 (StaleElementReferenceException 방지)
+        elem_duty_submit = elem_duty_root.find_element(
+            *self.gvpath_form_duties_root_submit
+        )
+        elem_duty_submit.click()
+
+    def duty_search(self, duty_select_option_b: str) -> None:
+        """search duties from the form"""
+        elem_duty_root = self.find_element_with_wait(self.gvpath_form_duties_root)
+        elem_duty_input = elem_duty_root.find_element(
+            *self.gvpath_form_duties_root_input
+        )
+        elem_duty_input.click()
+
+        self.duty_search_a(elem_duty_root)
+
+        elem_duty_submit = elem_duty_root.find_element(
+            *self.gvpath_form_duties_root_submit
+        )
+        elem_duty_submit.click()
+
+        elem_duty_input = elem_duty_root.find_element(
+            *self.gvpath_form_duties_root_input
+        )
+        elem_duty_input.click()
+
+        self.duty_search_b(elem_duty_root, duty_select_option_b)
+
     def fill_the_form(self) -> None:
         """fill the form"""
         # 창 전환후 elem 을 가져와야 됨
@@ -108,61 +177,7 @@ class FillTheForm(Elements):
         self.choose_select_box(selected_item=df["business"][0], value_type="business")
         self.choose_select_box(selected_item=df["scale"][0], value_type="scale")
 
-        # 요구사항 1: 담당 업무 리스트에서 클릭으로 1개 선택하기
-        elem_duty_root = self.find_element_with_wait(self.gvpath_form_duties_root)
-        elem_duty_input = elem_duty_root.find_element(
-            *self.gvpath_form_duties_root_input
-        )
-        elem_duty_input.click()
-
-        elem_duty_options = elem_duty_root.find_elements(
-            *self.gvpath_form_duties_root_options
-        )
-        # 추후 다중 선택이 가능할 수도 있으므로 리스트 형태로 가져오는 형태로 구현
-        # Pandas 에서 불러오기 시 list 가 아닌 str 로 불러오므로, list 로 변환하여 가져온다.
-        duty_select_options = ast.literal_eval(df["duty"][0])
-        duty_select_options_elem = []  # duty_select_options 의 element 값을 담을 리스트 변수
-        duty_options = []  # 전체 옵션을 담을 리스트 변수
-        for elem_duty_option in elem_duty_options:
-            duty_option_name = elem_duty_option.text
-            duty_options.append(duty_option_name)
-            for duty_select_option in duty_select_options:
-                if duty_option_name == duty_select_option:
-                    duty_select_options_elem.append(elem_duty_option)
-
-        # 선택한 옵션이 없을 경우 assert False 판단함
-        for duty_select_option in duty_select_options:
-            assert duty_select_option in duty_options
-
-        # 옵션 선택
-        for duty_select_option_elem in duty_select_options_elem:
-            duty_select_option_elem.click()
-
-        elem_duty_submit = elem_duty_root.find_element(
-            *self.gvpath_form_duties_root_submit
-        )
-        elem_duty_submit.click()
-
-        # 요구사항 2: 담당 업무 검색으로 선택하기
-        elem_duty_input.click()
-        elem_duty_search = self.find_element_with_wait(self.gvpath_Form_duties_search)
-        duty_select_option = "스타일리스트"
-        elem_duty_search.send_keys(duty_select_option)
-        # 검색한 뒤 UI 에 반영되는데 약간의 시간이 소요되어서 Sleep 삽입
-        sleep(1)
-        # element 정보를 다시 가져옴 (StaleElementReferenceException 방지)
-        elem_duty_options = elem_duty_root.find_elements(
-            *self.gvpath_form_duties_root_options
-        )
-        for elem_duty_option in elem_duty_options:
-            display_property = elem_duty_option.value_of_css_property("display")
-            if display_property == "inline-block":
-                elem_duty_option.click()
-        # element 정보를 다시 가져옴 (StaleElementReferenceException 방지)
-        elem_duty_submit = elem_duty_root.find_element(
-            *self.gvpath_form_duties_root_submit
-        )
-        elem_duty_submit.click()
+        self.duty_search(duty_select_option_b="스타일리스트")
 
         # 이용 약관 및 개인정보 활용 동의 체크
         elem_check_term = self.find_element_with_wait(self.gvpath_form_checkbox_term)
