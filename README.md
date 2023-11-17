@@ -18,8 +18,3 @@ pytest 로 실행하면 자동화 실행 코드를 볼 수 있습니다.
 > pytest ./tests/test_filltheform.py
 
 [재현 동영상](https://drive.google.com/file/d/1DJ86G_f1L0DSJZoxZ9qNXxIWcKxS__q6/view?usp=sharing)을 클릭하시면 실행된 예시를 보실 수 있습니다.
-
-#### 참고사항
-
-- 담당 업무 리스트에서 클릭으로 1개 → [fill_goodvibeform.py](https://github.com/chan-isback/illuminarean-uitest/blob/main/illuminarean/goodvibe/fill_goodvibeform.py) 요구사항 1: 담당 업무 리스트에서 클릭으로 1개 선택하기 참조
-- 담당 업무 검색으로 1개 선택 → [fill_goodvibeform.py](https://github.com/chan-isback/illuminarean-uitest/blob/main/illuminarean/goodvibe/fill_goodvibeform.py) 요구사항 2: 담당 업무 검색으로 선택하기 참조
