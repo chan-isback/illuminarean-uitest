@@ -17,4 +17,4 @@ pytest 로 실행하면 자동화 실행 코드를 볼 수 있습니다.
 
 > pytest ./tests/test_filltheform.py
 
-[재현 동영상]([https://drive.google.com/file/d/1DJ86G_f1L0DSJZoxZ9qNXxIWcKxS__q6/view?usp=sharing](https://drive.google.com/file/d/1sqMW5cNcVwAdFaretSawo3_bVINUV2d5/view?usp=sharing)https://drive.google.com/file/d/1sqMW5cNcVwAdFaretSawo3_bVINUV2d5/view?usp=sharing)을 클릭하시면 실행된 예시를 보실 수 있습니다.
+[재현 동영상](https://drive.google.com/file/d/1sqMW5cNcVwAdFaretSawo3_bVINUV2d5/view?usp=sharing)을 클릭하시면 실행된 예시를 보실 수 있습니다.
