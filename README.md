@@ -1,4 +1,20 @@
-# 자동화 작성 예시
+# Example Automation Test Script
+
+This is QA Engineer Chan Baek. Launch via pytest, and you can find this test script. It was written on 2023/11/17. If the site changes, an error may occur. In this case, you can check the error information from the pytest result.
+
+<b>Requirements</b>
+1. Access the example website
+2. Enter the Work menu at GNB
+3. Click a shortcut with a new tab from providing services
+4. Click try trial button
+5. Input fields
+6. Cancel the trial when it inputs every field
+
+Launch UI test command
+
+>pytest ./tests/test_filltheform.py
+
+Click [Recorded Movie](https://drive.google.com/file/d/1sqMW5cNcVwAdFaretSawo3_bVINUV2d5/view?usp=sharing), and then you can see the executing example.
 
 안녕하세요, QA Engineer 백찬입니다.
 pytest 로 실행하면 자동화 실행 코드를 볼 수 있습니다.
